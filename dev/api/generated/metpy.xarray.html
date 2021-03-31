@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>xarray &#8212; MetPy 1.0dev</title>
     
-  <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -23,10 +24,6 @@
 </style>
     
       
-  <link rel="stylesheet"
-    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
 
@@ -38,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme-unidata.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -145,91 +142,68 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-
-    <div class="bd-toc-item active">
-    
-  
-    <ul class="nav bd-sidenav">
-        
-        
-        
-        
-          
             
-                <li class="">
-                    <a href="metpy.constants.html">constants</a>
-                </li>
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.constants.html">
+   constants
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.units.html">
+   units
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.io.html">
+   metpy.io
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.calc.html">
+   calc
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.html">
+   plots
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.plots.ctables.html">
+   ctables
+  </a>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="metpy.interpolate.html">
+   interpolate
+  </a>
+ </li>
+ <li class="toctree-l2 current active">
+  <a class="current reference internal" href="#">
+   xarray
+  </a>
+  <ul>
+   <li class="toctree-l3">
+    <a class="reference internal" href="metpy.xarray.grid_deltas_from_dataarray.html">
+     grid_deltas_from_dataarray
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l2">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+</ul>
+  </div>
+</nav>
+            </div>
             
-          
-            
-                <li class="">
-                    <a href="metpy.units.html">units</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.io.html">metpy.io</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.calc.html">calc</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.plots.html">plots</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.plots.ctables.html">ctables</a>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="metpy.interpolate.html">interpolate</a>
-                </li>
-            
-          
-            
-  
-                <li class="active">
-                    <a href="">xarray</a>
-                    <ul>
-                    
-                        <li class="">
-                            <a href="metpy.xarray.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-          
-            
-                <li class="">
-                    <a href="../references.html">References</a>
-                </li>
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
-      </ul>
-  
-  </nav>
-          </div>
           
 
           
@@ -240,17 +214,19 @@
 </div>
 
 <nav id="bd-toc-nav">
-    <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#accessors" class="nav-link">Accessors</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#functions" class="nav-link">Functions</a>
-        </li>
-    
-    </ul>
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#accessors">
+   Accessors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -258,6 +234,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -364,7 +343,7 @@ otherwise, raise a RuntimeError if such coordinates exist.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
-<li><p><strong>tolerance</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
@@ -516,7 +495,7 @@ name (string) or a standard axis type (string).</p>
 <dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.quantify">
 <code class="sig-name descname"><span class="pre">quantify</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/xarray.html#MetPyDataArrayAccessor.quantify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.quantify" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a new DataArray with the data converted to a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
+<dd><p>Return a new DataArray with the data converted to a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
 <p class="rubric">Notes</p>
 <p>Any cached/lazy-loaded data (except that in a Dask array) will be loaded into memory
 by this operation. Do not utilize on moderate- to large-sized remote datasets before
@@ -544,9 +523,9 @@ subsetting!</p>
 <dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.unit_array">
 <em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">unit_array</span></code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.unit_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the data values of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
+<dd><p>Return the data values of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>.</p>
 <p class="rubric">Notes</p>
-<p>If not already existing as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> or Dask array, the data of this DataArray
+<p>If not already existing as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a> or Dask array, the data of this DataArray
 will be loaded into memory by this operation. Do not utilize on moderate- to
 large-sized remote datasets before subsetting!</p>
 </dd></dl>
@@ -554,7 +533,7 @@ large-sized remote datasets before subsetting!</p>
 <dl class="py method">
 <dt id="metpy.xarray.MetPyDataArrayAccessor.units">
 <em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">units</span></code><a class="headerlink" href="#metpy.xarray.MetPyDataArrayAccessor.units" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the units of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Unit" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Unit</span></code></a>.</p>
+<dd><p>Return the units of this DataArray as a <a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Unit" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Unit</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -648,7 +627,7 @@ variables with y and x coordinates.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If force is true, overwrite y and x coordinates if they exist, otherwise, raise a
 RuntimeError if such coordinates exist.</p></li>
-<li><p><strong>tolerance</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.16.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://pint.readthedocs.io/en/stable/developers_reference.html#pint.Quantity" title="(in pint v0.17)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.Quantity</span></code></a>) – Maximum range tolerated when collapsing projected y and x coordinates from 2D to
 1D. Defaults to 1 meter.</p></li>
 </ul>
 </dd>
@@ -781,7 +760,7 @@ is not present/the callable returns None, the attribute will not be updated.</p>
     </div>
 
     
-  <script src="../../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     
@@ -798,8 +777,8 @@ is not present/the callable returns None, the attribute will not be updated.</p>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Feb 26, 2021 at 21:46:22.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.1.<br/>
+        Last updated on Mar 31, 2021 at 02:50:15.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.3.<br/>
     </p>
   </div>
 </footer>
