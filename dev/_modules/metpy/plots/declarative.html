@@ -27,8 +27,9 @@
 
     
 
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
@@ -37,7 +38,7 @@
     
   <link rel="preload" as="script" href="../../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -179,13 +180,15 @@
 <span class="sd">&quot;&quot;&quot;Declarative plotting tools.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span>
-                       <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">traitlets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">Int</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">TraitError</span><span class="p">,</span>
+                       <span class="n">Tuple</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">validate</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ctables</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">wx_symbols</span>
@@ -672,7 +675,7 @@
     <span class="sd">&quot;&quot;&quot;Draw one or more plots.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="PanelContainer"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PanelContainer</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Collects panels and set complete figure related settings (e.g., size).&quot;&quot;&quot;</span>
 
@@ -741,10 +744,14 @@
 <div class="viewcode-block" id="PanelContainer.show"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Show the constructed graphic on the screen.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PanelContainer.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the panel container.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MapPanel"><a class="viewcode-back" href="../../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">MapPanel</span><span class="p">(</span><span class="n">Panel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set figure related elements for an individual panel.</span>
 
@@ -754,7 +761,7 @@
 <span class="sd">    projection, graphics area, and title.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">PanelContainer</span><span class="p">)</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">PanelContainer</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">layout</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">(),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">layout</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A tuple that contains the description (nrows, ncols, index) of the</span>
@@ -789,7 +796,10 @@
 <span class="s2">    This trait can also be set with a string value associated with the named geographic regions</span>
 <span class="s2">    within MetPy. The tuples associated with the names are based on a PlatteCarree projection.</span>
 <span class="s2">    For a CONUS region, the following strings can be used: &#39;us&#39;, &#39;spcus&#39;, &#39;ncus&#39;, and &#39;afus&#39;.</span>
-<span class="s2">    For regional plots, US postal state abbreviations can be used.</span>
+<span class="s2">    For regional plots, US postal state abbreviations can be used, such as &#39;co&#39;, &#39;ny&#39;, &#39;ca&#39;,</span>
+<span class="s2">    et cetera. Providing a &#39;+&#39; or &#39;-&#39; suffix to the string value will zoom in or out,</span>
+<span class="s2">    respectivley. Providing multiple &#39;+&#39; or &#39;-&#39; characters will zoom in or out further.</span>
+
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">projection</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">Instance</span><span class="p">(</span><span class="s1">&#39;cartopy.crs.Projection&#39;</span><span class="p">)],</span> <span class="n">default_value</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
@@ -816,6 +826,49 @@
 
 <span class="s2">    This trait sets a user-defined title that will plot at the top center of the figure.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">title_fontsize</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">title_fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer or string value for the font size of the title of the</span>
+<span class="s2">    figure.</span>
+
+<span class="s2">    This trait sets the font size for the title that will plot at the top center of the figure.</span>
+<span class="s2">    Accepts size in points or relative size. Allowed relative sizes are those of Matplotlib:</span>
+<span class="s2">    &#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@validate</span><span class="p">(</span><span class="s1">&#39;area&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_valid_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that proposed string or tuple is valid and turn string into a tuple extent.&quot;&quot;&quot;</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">proposal</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Parse string, check that string is valid, and determine extent based on string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w+)([-+]*)$&#39;</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid string area.&#39;</span><span class="p">)</span>
+            <span class="n">region</span><span class="p">,</span> <span class="n">modifier</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">region</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span>
+            <span class="k">elif</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">_areas</span><span class="p">:</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="n">_areas</span><span class="p">[</span><span class="n">region</span><span class="p">]</span>
+                <span class="n">zoom</span> <span class="o">=</span> <span class="n">modifier</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">modifier</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zoom_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">zoom</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid string area.&#39;</span><span class="p">)</span>
+        <span class="c1"># Otherwise, assume area is a tuple and check that latitudes/longitudes are valid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">west_lon</span><span class="p">,</span> <span class="n">east_lon</span><span class="p">,</span> <span class="n">south_lat</span><span class="p">,</span> <span class="n">north_lat</span> <span class="o">=</span> <span class="n">area</span>
+            <span class="n">valid_west</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span> <span class="o">&lt;=</span> <span class="n">west_lon</span> <span class="o">&lt;=</span> <span class="mi">180</span>
+            <span class="n">valid_east</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span> <span class="o">&lt;=</span> <span class="n">east_lon</span> <span class="o">&lt;=</span> <span class="mi">180</span>
+            <span class="n">valid_south</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">south_lat</span> <span class="o">&lt;=</span> <span class="mi">90</span>
+            <span class="n">valid_north</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">north_lat</span> <span class="o">&lt;=</span> <span class="mi">90</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">valid_west</span> <span class="ow">and</span> <span class="n">valid_east</span> <span class="ow">and</span> <span class="n">valid_south</span> <span class="ow">and</span> <span class="n">valid_north</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">area</span><span class="si">}</span><span class="s1">&quot; is not a valid string area.&#39;</span><span class="p">)</span>
+            <span class="n">extent</span> <span class="o">=</span> <span class="n">area</span>
+
+        <span class="k">return</span> <span class="n">extent</span>
 
     <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;plots&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_plots_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
@@ -869,6 +922,32 @@
         <span class="sd">&quot;&quot;&quot;Watch traits and set the need redraw flag as necessary.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">True</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_zoom_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">zoom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate new bounds for zooming in or out of a given extent.</span>
+
+<span class="sd">        ``extent`` is given as a tuple with four numeric values, in the same format as the</span>
+<span class="sd">        ``area`` trait.</span>
+
+<span class="sd">        If ``zoom`` = 0, the extent will not be changed from what was provided to the method</span>
+<span class="sd">        If ``zoom`` &gt; 0, the returned extent will be smaller (zoomed in)</span>
+<span class="sd">        If ``zoom`` &lt; 0, the returned extent will be larger (zoomed out)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">west_lon</span><span class="p">,</span> <span class="n">east_lon</span><span class="p">,</span> <span class="n">south_lat</span><span class="p">,</span> <span class="n">north_lat</span> <span class="o">=</span> <span class="n">extent</span>
+
+        <span class="c1"># Turn number of pluses and minuses into a number than can scale the latitudes and</span>
+        <span class="c1"># longitudes of our extent</span>
+        <span class="n">zoom_multiplier</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**-</span><span class="n">zoom</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="c1"># Calculate bounds for new, zoomed extent</span>
+        <span class="n">new_north_lat</span> <span class="o">=</span> <span class="n">north_lat</span> <span class="o">+</span> <span class="p">(</span><span class="n">south_lat</span> <span class="o">-</span> <span class="n">north_lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+        <span class="n">new_south_lat</span> <span class="o">=</span> <span class="n">south_lat</span> <span class="o">-</span> <span class="p">(</span><span class="n">south_lat</span> <span class="o">-</span> <span class="n">north_lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+        <span class="n">new_east_lon</span> <span class="o">=</span> <span class="n">east_lon</span> <span class="o">+</span> <span class="p">(</span><span class="n">west_lon</span> <span class="o">-</span> <span class="n">east_lon</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+        <span class="n">new_west_lon</span> <span class="o">=</span> <span class="n">west_lon</span> <span class="o">-</span> <span class="p">(</span><span class="n">west_lon</span> <span class="o">-</span> <span class="n">east_lon</span><span class="p">)</span> <span class="o">*</span> <span class="n">zoom_multiplier</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">new_west_lon</span><span class="p">,</span> <span class="n">new_east_lon</span><span class="p">,</span> <span class="n">new_south_lat</span><span class="p">,</span> <span class="n">new_north_lat</span><span class="p">)</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the :class:`matplotlib.axes.Axes` to draw on.</span>
@@ -903,17 +982,11 @@
         <span class="c1"># Only need to run if we&#39;ve actually changed.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span><span class="p">:</span>
 
-            <span class="c1"># Set the extent as appropriate based on the area. One special case for &#39;global&#39;</span>
+            <span class="c1"># Set the extent as appropriate based on the area. One special case for &#39;global&#39;.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># Try to look up if we have a string</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="n">area</span> <span class="o">=</span> <span class="n">_areas</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-                <span class="c1"># Otherwise, assume we have a tuple to use as the extent</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 
             <span class="c1"># Draw all of the plots.</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">:</span>
@@ -926,11 +999,32 @@
 
             <span class="c1"># Use the set title or generate one.</span>
             <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title_fontsize</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of this MapPanel.&quot;&quot;&quot;</span>
+        <span class="c1"># Create new, blank instance of MapPanel</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+
+        <span class="c1"># Copy each attribute from current MapPanel to new MapPanel</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait_names</span><span class="p">():</span>
+            <span class="c1"># The &#39;plots&#39; attribute is a list.</span>
+            <span class="c1"># A copy must be made for each plot in the list.</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;plots&#39;</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span> <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plots</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+<div class="viewcode-block" id="MapPanel.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the panel.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Plots2D"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Plots2D.html#metpy.plots.Plots2D">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">Plots2D</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The highest level class related to plotting 2D data.</span>
 
@@ -1053,10 +1147,14 @@
             <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;@</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">&#39;</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="Plots2D.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Plots2D.html#metpy.plots.Plots2D.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the plot.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PlotScalar"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotScalar.html#metpy.plots.PlotScalar">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PlotScalar</span><span class="p">(</span><span class="n">Plots2D</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Defines the common elements of 2D scalar plots for single scalar value fields.</span>
 
@@ -1132,9 +1230,10 @@
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;colorbar&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+                <span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div></div>
+                <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar_fontsize</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
 <span class="k">class</span> <span class="nc">ContourTraits</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
@@ -1153,6 +1252,14 @@
     <span class="n">clabels</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A boolean (True/False) on whether to plot contour labels.</span>
 
 <span class="s2">    To plot contour labels set this trait to ``True``, the default value is ``False``.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">label_fontsize</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">label_fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer, float, or string value to set the font size of labels for contours.</span>
+
+<span class="s2">    This trait sets the font size for labels that will plot along contour lines. Accepts</span>
+<span class="s2">    size in points or relative size. Allowed relative sizes are those of Matplotlib:</span>
+<span class="s2">    &#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
 
@@ -1182,8 +1289,17 @@
 <span class="s2">    ``None``.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
+    <span class="n">colorbar_fontsize</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Unicode</span><span class="p">()],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">colorbar_fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer, float, or string value to set the font size of</span>
+<span class="s2">    labels for the colorbar.</span>
 
-<div class="viewcode-block" id="ImagePlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="s2">    This trait sets the font size of labels for the colorbar. Accepts size in points or</span>
+<span class="s2">    relative size. Allowed relative sizes are those of Matplotlib: &#39;xx-small&#39;, &#39;x-small&#39;,</span>
+<span class="s2">    &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">ImagePlot</span><span class="p">(</span><span class="n">PlotScalar</span><span class="p">,</span> <span class="n">ColorfillTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Make raster image using `~matplotlib.pyplot.imshow` for satellite or colored image.&quot;&quot;&quot;</span>
 
@@ -1229,10 +1345,10 @@
         <span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;upper&#39;</span> <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;lower&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">imdata</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extents</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
                                             <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
-                                            <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span></div>
+                                            <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ContourPlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">ContourPlot</span><span class="p">(</span><span class="n">PlotScalar</span><span class="p">,</span> <span class="n">ContourTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Make contour plots by defining specific traits.&quot;&quot;&quot;</span>
 
@@ -1260,7 +1376,7 @@
 <span class="s2">    dashdot.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;linecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">,</span> <span class="s1">&#39;clabels&#39;</span><span class="p">)</span>
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;linecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">,</span> <span class="s1">&#39;clabels&#39;</span><span class="p">,</span> <span class="s1">&#39;label_fontsize&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
         <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
@@ -1276,10 +1392,10 @@
                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clabels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                               <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+                               <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label_fontsize</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="FilledContourPlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">FilledContourPlot</span><span class="p">(</span><span class="n">PlotScalar</span><span class="p">,</span> <span class="n">ColorfillTraits</span><span class="p">,</span> <span class="n">ContourTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Make color-filled contours plots by defining appropriate traits.&quot;&quot;&quot;</span>
 
@@ -1295,10 +1411,10 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
                                               <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
-                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span></div>
+                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PlotVector"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotVector.html#metpy.plots.PlotVector">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PlotVector</span><span class="p">(</span><span class="n">Plots2D</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Defines common elements for 2D vector plots.</span>
 
@@ -1422,10 +1538,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="BarbPlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.BarbPlot.html#metpy.plots.BarbPlot">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">BarbPlot</span><span class="p">(</span><span class="n">PlotVector</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Make plots of wind barbs on a map with traits to refine the look of plotted elements.&quot;&quot;&quot;</span>
 
@@ -1457,10 +1573,10 @@
             <span class="n">x</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
             <span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
             <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">barblength</span><span class="p">,</span>
-            <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span></div>
+            <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PlotObs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="k">class</span> <span class="nc">PlotObs</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The highest level class related to plotting observed surface and upperair data.</span>
 
@@ -1481,6 +1597,7 @@
 <span class="sd">      * vector_field_length (optional)</span>
 <span class="sd">      * vector_plot_units (optional)</span>
 <span class="sd">      * reduce_points (optional)</span>
+<span class="sd">      * fontsize (optional)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">)</span>
@@ -1575,6 +1692,10 @@
 <span class="s2">    Setting this attribute will convert the units of the field variable to the given units for</span>
 <span class="s2">    plotting using the MetPy Units module, provided that units are attached to the DataFrame.</span>
 <span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">fontsize</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">fontsize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer value to set the font size of station plots. Default</span>
+<span class="s2">    is 10 pt.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PlotObs.clear"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear the plot.</span>
@@ -1724,7 +1845,7 @@
         <span class="n">subset</span> <span class="o">=</span> <span class="n">reduce_point_density</span><span class="p">(</span><span class="n">point_locs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_points</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">[</span><span class="n">subset</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">subset</span><span class="p">],</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+                                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ob_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">):</span>
             <span class="n">field_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1778,7 +1899,11 @@
                 <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_field</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">subset</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">vector_kwargs</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_field_length</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">vector_kwargs</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">vector_kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PlotObs.copy"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PlotObs.html#metpy.plots.PlotObs.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the plot.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 </pre></div>
 
               </div>
@@ -1813,8 +1938,8 @@
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 29, 2021 at 18:36:13.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 26, 2021 at 11:21:36.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

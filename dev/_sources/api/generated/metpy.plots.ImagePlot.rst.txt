@@ -13,6 +13,7 @@ ImagePlot
    .. autosummary::
    
       ~ImagePlot.colorbar
+      ~ImagePlot.colorbar_fontsize
       ~ImagePlot.colormap
       ~ImagePlot.cross_validation_lock
       ~ImagePlot.data
@@ -46,6 +47,7 @@ ImagePlot
       ~ImagePlot.clear
       ~ImagePlot.clear_collections
       ~ImagePlot.clear_handle
+      ~ImagePlot.copy
       ~ImagePlot.draw
       ~ImagePlot.has_trait
       ~ImagePlot.hold_trait_notifications
@@ -74,6 +76,7 @@ ImagePlot
 
    
    .. autoattribute:: colorbar
+   .. autoattribute:: colorbar_fontsize
    .. autoattribute:: colormap
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: data
@@ -106,6 +109,7 @@ ImagePlot
    .. automethod:: clear
    .. automethod:: clear_collections
    .. automethod:: clear_handle
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

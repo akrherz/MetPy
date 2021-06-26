@@ -14,6 +14,7 @@ FilledContourPlot
    
       ~FilledContourPlot.clabels
       ~FilledContourPlot.colorbar
+      ~FilledContourPlot.colorbar_fontsize
       ~FilledContourPlot.colormap
       ~FilledContourPlot.contours
       ~FilledContourPlot.cross_validation_lock
@@ -21,6 +22,7 @@ FilledContourPlot
       ~FilledContourPlot.field
       ~FilledContourPlot.griddata
       ~FilledContourPlot.image_range
+      ~FilledContourPlot.label_fontsize
       ~FilledContourPlot.level
       ~FilledContourPlot.name
       ~FilledContourPlot.parent
@@ -48,6 +50,7 @@ FilledContourPlot
       ~FilledContourPlot.clear
       ~FilledContourPlot.clear_collections
       ~FilledContourPlot.clear_handle
+      ~FilledContourPlot.copy
       ~FilledContourPlot.draw
       ~FilledContourPlot.has_trait
       ~FilledContourPlot.hold_trait_notifications
@@ -77,6 +80,7 @@ FilledContourPlot
    
    .. autoattribute:: clabels
    .. autoattribute:: colorbar
+   .. autoattribute:: colorbar_fontsize
    .. autoattribute:: colormap
    .. autoattribute:: contours
    .. autoattribute:: cross_validation_lock
@@ -84,6 +88,7 @@ FilledContourPlot
    .. autoattribute:: field
    .. autoattribute:: griddata
    .. autoattribute:: image_range
+   .. autoattribute:: label_fontsize
    .. autoattribute:: level
    .. autoattribute:: name
    .. autoattribute:: parent
@@ -110,6 +115,7 @@ FilledContourPlot
    .. automethod:: clear
    .. automethod:: clear_collections
    .. automethod:: clear_handle
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

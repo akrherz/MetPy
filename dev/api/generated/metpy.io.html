@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>metpy.io &#8212; MetPy 1.0dev</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
@@ -27,8 +28,9 @@
 
     
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
@@ -37,7 +39,7 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.1e043a052b0af929e4d8.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -183,6 +185,11 @@
     </a>
    </li>
    <li class="toctree-l3">
+    <a class="reference internal" href="metpy.io.set_module.html">
+     set_module
+    </a>
+   </li>
+   <li class="toctree-l3">
     <a class="reference internal" href="metpy.io.GiniFile.html">
      GiniFile
     </a>
@@ -206,7 +213,7 @@
  </li>
  <li class="toctree-l2">
   <a class="reference internal" href="metpy.plots.html">
-   plots
+   metpy.plots
   </a>
  </li>
  <li class="toctree-l2">
@@ -257,7 +264,7 @@
               
               <div>
                 
-  <div class="section" id="module-metpy.io">
+  <section id="module-metpy.io">
 <span id="metpy-io"></span><h1>metpy.io<a class="headerlink" href="#module-metpy.io" title="Permalink to this headline">¶</a></h1>
 <p>Classes for reading various file formats.</p>
 <p>These classes are written to take both file names (for local files) or file-like objects;
@@ -282,6 +289,9 @@ or remote files (using <a class="reference external" href="https://docs.python.o
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.io.parse_metar_to_dataframe.html#metpy.io.parse_metar_to_dataframe" title="metpy.io.parse_metar_to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_metar_to_dataframe</span></code></a>(metar_text, *[, …])</p></td>
 <td><p>Parse a single METAR report into a Pandas DataFrame.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.set_module.html#metpy.io.set_module" title="metpy.io.set_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_module</span></code></a>(globls)</p></td>
+<td><p>Set the module for all functions in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Classes</p>
@@ -302,7 +312,7 @@ or remote files (using <a class="reference external" href="https://docs.python.o
 </tr>
 </tbody>
 </table>
-</div>
+</section>
 
 
               </div>
@@ -339,8 +349,8 @@ or remote files (using <a class="reference external" href="https://docs.python.o
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Apr 29, 2021 at 18:36:13.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+        Last updated on Jun 26, 2021 at 11:21:36.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
     </p>
   </div>
 </footer>

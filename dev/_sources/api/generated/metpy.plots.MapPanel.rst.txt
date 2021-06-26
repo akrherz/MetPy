@@ -21,6 +21,7 @@ MapPanel
       ~MapPanel.plots
       ~MapPanel.projection
       ~MapPanel.title
+      ~MapPanel.title_fontsize
 
    
    
@@ -38,6 +39,7 @@ MapPanel
       ~MapPanel.class_own_traits
       ~MapPanel.class_trait_names
       ~MapPanel.class_traits
+      ~MapPanel.copy
       ~MapPanel.draw
       ~MapPanel.has_trait
       ~MapPanel.hold_trait_notifications
@@ -75,6 +77,7 @@ MapPanel
    .. autoattribute:: plots
    .. autoattribute:: projection
    .. autoattribute:: title
+   .. autoattribute:: title_fontsize
 
    
    
@@ -91,6 +94,7 @@ MapPanel
    .. automethod:: class_own_traits
    .. automethod:: class_trait_names
    .. automethod:: class_traits
+   .. automethod:: copy
    .. automethod:: draw
    .. automethod:: has_trait
    .. automethod:: hold_trait_notifications

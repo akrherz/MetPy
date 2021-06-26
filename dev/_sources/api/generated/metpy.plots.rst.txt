@@ -1,6 +1,6 @@
 ﻿
 
-plots
+metpy.plots
 ===========
 
 .. automodule:: metpy.plots
