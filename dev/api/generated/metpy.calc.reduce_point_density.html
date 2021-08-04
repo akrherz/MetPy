@@ -44,7 +44,7 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/doc_shared.js"></script>
-    <link rel="shortcut icon" href="../../_static/_static/metpy_32x32.ico"/>
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html" />
@@ -61,7 +61,7 @@
 
     <a class="navbar-brand" href="../../index.html">
     
-      <img src="../../_static/_static/metpy_horizontal.png" class="logo" alt="logo" />
+      <img src="../../_static/metpy_horizontal.png" class="logo" alt="logo" />
     
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -866,6 +866,8 @@ data), returning a mask that can be used to select the points from one or more a
 providing an array of <code class="docutils literal notranslate"><span class="pre">priority</span></code> values (e.g. rainfall totals to ensure that
 stations with higher precipitation remain in the mask). The points and radius can be
 specified with units. If none are provided, meters are assumed.</p>
+<p>Points with at least one non-finite (i.e. NaN or Inf) value are ignored and returned with
+a value of <code class="docutils literal notranslate"><span class="pre">False</span></code> (meaning don’t keep).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -945,8 +947,8 @@ be used to control selection priority for points.</p></li>
   <div class="container">
     <p>
           &copy; Copyright 2008–2021, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712.<br/>
-        Last updated on Jul 13, 2021 at 18:32:09.<br/>
-        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.0.<br/>
+        Last updated on Aug 04, 2021 at 18:32:27.<br/>
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
 </footer>
