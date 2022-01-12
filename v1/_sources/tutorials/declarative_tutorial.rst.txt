@@ -126,7 +126,7 @@ We'll start this tutorial by reading in a gridded dataset using Xarray.
         u-component_of_wind_height_above_ground  (time, height_above_ground1, lat, lon) float32 ...
         Temperature_height_above_ground          (time, height_above_ground, lat, lon) float32 ...
         Geopotential_height_isobaric             (time, isobaric3, lat, lon) float32 ...
-        Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 1.002e+...
+        Pressure_reduced_to_MSL_msl              (time, lat, lon) float32 ...
 
 
 
@@ -375,6 +375,12 @@ All of our setting now produce the following map!
  .. code-block:: none
 
     Found valid latitude/longitude coordinates, assuming latitude_longitude for projection grid_mapping variable
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:245: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+      if len(multi_line_string) > 1:
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:297: ShapelyDeprecationWarning: Iteration over multi-part geometries is deprecated and will be removed in Shapely 2.0. Use the `geoms` property to access the constituent parts of a multi-part geometry.
+      for line in multi_line_string:
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:364: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+      if len(p_mline) > 0:
     Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
     Found valid latitude/longitude coordinates, assuming latitude_longitude for projection grid_mapping variable
 
@@ -502,6 +508,12 @@ list!
  .. code-block:: none
 
     Found valid latitude/longitude coordinates, assuming latitude_longitude for projection grid_mapping variable
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:245: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+      if len(multi_line_string) > 1:
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:297: ShapelyDeprecationWarning: Iteration over multi-part geometries is deprecated and will be removed in Shapely 2.0. Use the `geoms` property to access the constituent parts of a multi-part geometry.
+      for line in multi_line_string:
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:364: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+      if len(p_mline) > 0:
     Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
     Found valid latitude/longitude coordinates, assuming latitude_longitude for projection grid_mapping variable
     Could not find variable corresponding to the value of grid_mapping: LatLon_Projection
@@ -633,6 +645,19 @@ panels on the figure. In this case we'll focus in on the state of Indiana for pl
     :alt: Surface plot for 2019-07-01 12:00:00
     :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:245: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+      if len(multi_line_string) > 1:
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:297: ShapelyDeprecationWarning: Iteration over multi-part geometries is deprecated and will be removed in Shapely 2.0. Use the `geoms` property to access the constituent parts of a multi-part geometry.
+      for line in multi_line_string:
+    /opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/cartopy/crs.py:364: ShapelyDeprecationWarning: __len__ for multi-part geometries is deprecated and will be removed in Shapely 2.0. Check the length of the `geoms` property instead to get the  number of parts of a multi-part geometry.
+      if len(p_mline) > 0:
 
 
 
@@ -927,7 +952,7 @@ Default value is zero (e.g., no points are removed from the plot).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.434 seconds)
+   **Total running time of the script:** ( 0 minutes  20.698 seconds)
 
 
 .. _sphx_glr_download_tutorials_declarative_tutorial.py:
