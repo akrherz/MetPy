@@ -475,7 +475,8 @@ def test_declarative_contour_convert_units():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=5.34 if version_check('matplotlib<3.10') else 0.246)
+                               tolerance=7.85 if (version_check('matplotlib<3.10') or
+                                   version_check('cartopy<0.25')) else 0.246)
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -827,7 +828,8 @@ def test_global():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=5.101 if version_check('matplotlib<3.10') else 0.044)
+                               tolerance=7.891 if (version_check('matplotlib<3.10') or
+                                   version_check('cartopy<0.25')) else 0.019)
 @needs_cartopy
 def test_latlon():
     """Test our handling of lat/lon information."""
