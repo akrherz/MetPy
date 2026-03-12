@@ -475,7 +475,8 @@ def test_declarative_contour_convert_units():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=5.34 if version_check('matplotlib<3.10') else 0.246)
+                               tolerance=7.85 if (version_check('matplotlib<3.10') or
+                                   version_check('cartopy<0.25')) else 0.246)
 @needs_cartopy
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -827,7 +828,8 @@ def test_global():
 
 
 @pytest.mark.mpl_image_compare(remove_text=True,
-                               tolerance=5.101 if version_check('matplotlib<3.10') else 0.044)
+                               tolerance=7.891 if (version_check('matplotlib<3.10') or
+                                   version_check('cartopy<0.25')) else 0.019)
 @needs_cartopy
 def test_latlon():
     """Test our handling of lat/lon information."""
@@ -1784,6 +1786,8 @@ def test_declarative_title_fontsize():
     return pc.figure
 
 
+# Broken on Cartopy 0.25 due to 0-area filled contour. See SciTools/cartopy#2635
+@pytest.mark.xfail(version_check('cartopy==0.25.0'), reason='SciTools/cartopy#2635')
 @pytest.mark.mpl_image_compare(remove_text=False,
                                tolerance=0.951 if version_check('cartopy<0.23') else 0.)
 @needs_cartopy
