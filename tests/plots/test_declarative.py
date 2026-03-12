@@ -1786,6 +1786,8 @@ def test_declarative_title_fontsize():
     return pc.figure
 
 
+# Broken on Cartopy 0.25 due to 0-area filled contour. See SciTools/cartopy#2635
+@pytest.mark.xfail(version_check('cartopy==0.25.0'), reason='SciTools/cartopy#2635')
 @pytest.mark.mpl_image_compare(remove_text=False,
                                tolerance=0.951 if version_check('cartopy<0.23') else 0.)
 @needs_cartopy
